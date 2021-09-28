@@ -6,7 +6,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user=User.find(params[:id])
+    @user = User.find(params[:id])
+    @pagy, @microposts = pagy(@user.microposts.order(id: :desc))
+    counts(@user)
   end
 
   def new
