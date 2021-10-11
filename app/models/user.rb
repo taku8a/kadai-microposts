@@ -9,7 +9,10 @@ class User < ApplicationRecord
     has_many :relationships
     has_many :followings, through: :relationships, source: :follow
     has_many :reverses_of_relationship, class_name: "Relationship",foreign_key: "follow_id"
-    has_many :followers, through: :reverses_of_relationship, source: :user 
+    has_many :followers, through: :reverses_of_relationship, source: :user
+    has_many :bookmarks
+    has_many :likes, through: :bookmarks, source: :micropost
+    
     
     def follow(other_user)
         unless self == other_user
@@ -30,4 +33,22 @@ class User < ApplicationRecord
         Micropost.where(user_id: self.following_ids + [self.id])
     
     end
+    
+    
+    
+    def bookmark(other_user)
+        unless self == other_user
+            self.bookmarks.find_or_create_by(user_id: other_user.id)
+        end
+    end
+    
+    def unbookmark(other_user)
+        bookmark = self.bookmarks.find_by(user_id: other_user.id)
+        bookmark.destroy if bookmark
+    end
+    
+    def bookmark?(other_user)
+        self.likes.include?(other_user)
+    end
+    
 end

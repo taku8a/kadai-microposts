@@ -1,0 +1,9 @@
+
+  <% if micropost.already_bookmarked?(current_user) %>
+    <%= link_to "Unbookmark", micropost_bookmark_path(micropost, current_user.id), method: :delete, class: "btn btn-danger btn-sm" %>
+    
+    
+  <% else %>
+    <%= link_to "Bookmark", micropost_bookmarks_path(micropost,current_user.id), method: :post, class: "btn btn-danger btn-sm" %>
+    
+  <% end %>

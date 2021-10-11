@@ -10,7 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_01_003402) do
+ActiveRecord::Schema.define(version: 2021_10_04_064130) do
+
+  create_table "bookmarks", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "micropost_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["micropost_id"], name: "index_bookmarks_on_micropost_id"
+    t.index ["user_id", "micropost_id"], name: "index_bookmarks_on_user_id_and_micropost_id", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "favorites", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "micropost_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["micropost_id"], name: "index_favorites_on_micropost_id"
+    t.index ["user_id", "micropost_id"], name: "index_favorites_on_user_id_and_micropost_id", unique: true
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
 
   create_table "microposts", charset: "utf8mb4", force: :cascade do |t|
     t.string "content"
@@ -38,6 +58,10 @@ ActiveRecord::Schema.define(version: 2021_10_01_003402) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "bookmarks", "microposts"
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "favorites", "microposts"
+  add_foreign_key "favorites", "users"
   add_foreign_key "microposts", "users"
   add_foreign_key "relationships", "users"
   add_foreign_key "relationships", "users", column: "follow_id"

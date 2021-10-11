@@ -1,0 +1,5 @@
+<% if current_user.bookmark?(micropost) %>
+    <%= render "bookmarks/unbookmark", micropost: micropost %>
+<% else %>
+    <%= render "bookmarks/bookmark", micropost: micropost %>
+<% end %>
